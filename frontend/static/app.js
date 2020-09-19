@@ -30,23 +30,9 @@ const get = async (url, settings) => {
 
 evtSource.onmessage = async e => {
     const res = JSON.parse(e.data);
-    const filename = res.filename;
+    const imgDataUrl = res.img;
     const frame_idx = res.frame_idx;
 
-    const settings = {
-        method: 'GET',
-        responseType: 'blob',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-    };
-
-    let url = `/get_image?filename=${filename}`;
-    const blob = await get(url, settings);
-    const filereader = new FileReader();
-    filereader.addEventListener('load', () => {
-        $('#frame_idx').text(`Frame Number ${frame_idx}`);
-        plotFig(filereader.result);
-    });
-    filereader.readAsDataURL(blob);
+    $('#frame_idx').text(`Frame Number ${frame_idx}`);
+    plotFig(imgDataUrl);
 };

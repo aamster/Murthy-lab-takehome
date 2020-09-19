@@ -8,7 +8,7 @@ from flask import Flask, request, Response, render_template, send_file
 from Consumer import Consumer
 from Producer import Producer
 from ResultCollector import ResultCollector
-from plotting import preprocess_for_plot, save_for_plot
+from util import encode_img_to_data_url
 
 app = Flask(__name__, static_folder='frontend/static', template_folder='frontend/templates')
 
@@ -40,9 +40,9 @@ def generate_predictions():
     result_collector = ResultCollector(receiver_port=args.consumer_send_port)
 
     def generate():
-        for frame_idx, img, pred in result_collector.run():
-            img_filename = save_for_plot(img=img, frame_idx=frame_idx)
-            res = json.dumps({'filename': img_filename, 'frame_idx': frame_idx})
+        for frame_idx, img, peak_points in result_collector.run():
+            img_data_url = encode_img_to_data_url(img=img)
+            res = json.dumps({'img': img_data_url, 'frame_idx': frame_idx})
             yield f'data: {res}\n\n'
     return Response(generate(), mimetype='text/event-stream')
 
