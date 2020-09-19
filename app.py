@@ -42,7 +42,8 @@ def generate_predictions():
     def generate():
         for frame_idx, img, peak_points in result_collector.run():
             img_data_url = encode_img_to_data_url(img=img)
-            res = json.dumps({'img': img_data_url, 'frame_idx': frame_idx})
+            peak_points = peak_points.numpy().tolist()
+            res = json.dumps({'img': img_data_url, 'peak_points': peak_points, 'frame_idx': frame_idx})
             yield f'data: {res}\n\n'
     return Response(generate(), mimetype='text/event-stream')
 

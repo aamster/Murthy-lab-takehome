@@ -1,3 +1,4 @@
+import cv2
 import tensorflow as tf
 import numpy as np
 
@@ -15,7 +16,9 @@ class InferenceEngine:
         return Y
 
     @staticmethod
-    def find_local_peaks(heatmap, threshold=0.2):
+    def find_local_peaks(img, heatmap, threshold=0.2):
+        heatmap = cv2.resize(heatmap.squeeze(), img.squeeze().shape)
+        heatmap = heatmap.reshape((1, heatmap.shape[0], heatmap.shape[1], 1))
         return find_local_peaks(img=heatmap, threshold=threshold)
 
 

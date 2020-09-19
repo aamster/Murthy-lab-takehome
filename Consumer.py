@@ -31,7 +31,8 @@ class Consumer:
             log.debug(f'CONSUMER: Made pred for frame {frame_idx}')
 
             log.debug(f'CONSUMER: Start find local peaks frame {frame_idx}')
-            peak_points, _, _, _ = inference_engine.find_local_peaks(heatmap=preds, threshold=self.local_peak_threshold)
+            peak_points, _, _, _ = inference_engine.find_local_peaks(img=X, heatmap=preds,
+                                                                     threshold=self.local_peak_threshold)
             log.debug(f'CONSUMER: End find local peaks frame {frame_idx}')
 
             log.debug(f'CONSUMER: Sending results for frame {frame_idx} to result collector...')
