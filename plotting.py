@@ -5,6 +5,11 @@ import plotly
 from PIL import Image
 
 
+def save_for_plot(img, frame_idx):
+    filename = f'output/{frame_idx}.jpg'
+    cv2.imwrite(filename, img)
+    return filename
+
 def preprocess_for_plot(img, pred):
     img = img.squeeze()
 

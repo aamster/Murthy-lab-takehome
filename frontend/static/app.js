@@ -1,48 +1,52 @@
 const evtSource = new EventSource('/generate_predictions?video_name=test_clip.15s.mp4');
 
-const plotFig = (img, pred) => {
-    img.forEach((row, i) => {
-        img[i].forEach((col, ii) => {
-            const v = img[i][ii];
-            img[i][ii] = [v, v, v];
-        });
-    });
-    
+const plotFig = (imgUrl) => {
     const trace1 = {
-        z: img,
+        source: imgUrl,
         type: 'image'
     };
 
-    const trace2 = {
-        z: pred,
-        type: 'heatmap',
-        opacity: 0.5
-    };
-
     const layout = {
-        width: 800,
-        height: 800
+        width: 1024,
+        height: 1024
     };
 
     const plotExists = $('#plot.js-plotly-plot').length > 0;
 
     if(plotExists) {
-        Plotly.restyle('plot', {z: [trace1.z, trace2.z]});
+        Plotly.restyle('plot', {source: [trace1.source]});
     } else {
-        Plotly.newPlot('plot', [trace1, trace2], layout);
+        Plotly.newPlot('plot', [trace1], layout);
     }
 
 
 };
 
-let frame_idx = 0;
+const get = async (url, settings) => {
+    const response = await fetch(url, settings);
+    const res = await response.blob();
+    return res
+}
 
-evtSource.onmessage = e => {
+evtSource.onmessage = async e => {
     const res = JSON.parse(e.data);
-    let img = res.img;
-    const pred = res.pred;
+    const filename = res.filename;
     const frame_idx = res.frame_idx;
 
-    $('#frame_idx').text(`Frame Number ${frame_idx}`);
-    plotFig(img, pred);
+    const settings = {
+        method: 'GET',
+        responseType: 'blob',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    };
+
+    let url = `/get_image?filename=${filename}`;
+    const blob = await get(url, settings);
+    const filereader = new FileReader();
+    filereader.addEventListener('load', () => {
+        $('#frame_idx').text(`Frame Number ${frame_idx}`);
+        plotFig(filereader.result);
+    });
+    filereader.readAsDataURL(blob);
 };

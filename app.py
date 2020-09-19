@@ -3,12 +3,12 @@ import json
 import logging
 from multiprocessing import Process
 
-from flask import Flask, request, Response, render_template
+from flask import Flask, request, Response, render_template, send_file
 
 from Consumer import Consumer
 from Producer import Producer
 from ResultCollector import ResultCollector
-from plotting import preprocess_for_plot
+from plotting import preprocess_for_plot, save_for_plot
 
 app = Flask(__name__, static_folder='frontend/static', template_folder='frontend/templates')
 
@@ -41,18 +41,17 @@ def generate_predictions():
 
     def generate():
         for frame_idx, img, pred in result_collector.run():
-            log.debug('APP: START preprocess for plot')
-            img, pred = preprocess_for_plot(img=img, pred=pred)
-            log.debug('APP: END preprocess for plot')
-
-            res = {'img': img, 'pred': pred, 'frame_idx': frame_idx}
-
-            log.debug('APP: START jsonify result')
-            res = json.dumps(res)
-            log.debug('APP: END jsonify result')
-
+            img_filename = save_for_plot(img=img, frame_idx=frame_idx)
+            res = json.dumps({'filename': img_filename, 'frame_idx': frame_idx})
             yield f'data: {res}\n\n'
     return Response(generate(), mimetype='text/event-stream')
+
+
+@app.route('/get_image')
+def get_image():
+    filename = request.args.get('filename')
+    return send_file(filename, as_attachment=True, mimetype='image/jpeg')
+
 
 
 if __name__ == '__main__':
