@@ -44,7 +44,7 @@ def generate_predictions():
     Spawns a producer which reads video frames and result collector to yield results.
     Iterates through result collector and yields results to client as they are available
     Uses event-stream to keep connection open.
-    
+
     :return: Flask response (event-stream)
     """
     video_name = request.args.get('video_name')
