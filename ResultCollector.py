@@ -17,7 +17,7 @@ class ResultCollector:
         next_idx = 0
         n_frames = float('inf')
 
-        while next_idx < n_frames - 1:
+        while next_idx < n_frames:
             img, peak_points, frame_idx, n_frames = receiver.recv_pyobj()
             results[frame_idx] = (img, peak_points)
             while next_idx in results:
