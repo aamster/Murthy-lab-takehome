@@ -1,4 +1,4 @@
-# Princeton-takehome
+# Murthy Lab Takehome
 
 This implements task A: A server that can interactively perform model inference
 
