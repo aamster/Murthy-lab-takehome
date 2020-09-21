@@ -15,7 +15,7 @@ The architecture for performing inference on the video is:
 
 ## To Run
 1. `conda env create -f env.yml`
-2. Place video files in a directory called "data". Place model file in directory called "model" off of the root project directory.
+2. Place video files in a directory called "data". Place model file in directory called "models" (assumes it is called "best_model.h5") off of the root project directory.
 3. `python app.py -consumer_send_port <consumer_send_port> -producer_send_port <producer_send_port> -n_servers <n_servers>`
 4. Navigate to http://localhost:5000/ and click the "start" button.
 
