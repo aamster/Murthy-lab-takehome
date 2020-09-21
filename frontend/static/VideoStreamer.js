@@ -16,6 +16,12 @@ class VideoStreamer {
             this.plotFig(imgDataUrl, peakPoints);
         };
 
+        this.eventSource.onerror = () => {
+            $('#errorMsg').show();
+            $('#startBtn').prop('disabled', false);
+            this.eventSource.close();
+        }
+
         this.eventSource.addEventListener('done', () => {
             $('#startBtn').prop('disabled', false);
             this.eventSource.close();

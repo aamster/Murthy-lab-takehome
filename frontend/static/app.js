@@ -14,6 +14,7 @@ const run = async () => {
     populateVideoList(videos);
 
     $('#startBtn').click(() => {
+        $('#errorMsg').hide();
         $('#startBtn').prop('disabled', true);
         const videoStreamer = new VideoStreamer();
         videoStreamer.start();

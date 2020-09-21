@@ -16,13 +16,14 @@ app = Flask(__name__, static_folder='frontend/static', template_folder='frontend
 parser = argparse.ArgumentParser()
 parser.add_argument('consumer_send_port')
 parser.add_argument('producer_send_port')
+parser.add_argument('-n_servers', default=1, type=int, required=False)
 args = parser.parse_args()
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
 
 log = logging.getLogger(__name__)
 
-for _ in range(4):
+for _ in range(args.n_servers):
     consumer = Consumer(model_path='models/best_model.h5', receiver_port=args.producer_send_port,
                         sender_port=args.consumer_send_port)
     Process(target=consumer.run).start()
