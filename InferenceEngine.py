@@ -32,8 +32,8 @@ class InferenceEngine:
         :param threshold: Threshold to determine if a point should be considered a peak
         :return: position of peaks
         """
-        heatmap = cv2.resize(heatmap.squeeze(), img.squeeze().shape)
-        heatmap = heatmap.reshape((1, heatmap.shape[0], heatmap.shape[1], 1))
+        heatmap = cv2.resize(heatmap.squeeze(), img.squeeze().shape)            # Resize heatmap to be same size as img
+        heatmap = heatmap.reshape((1, heatmap.shape[0], heatmap.shape[1], 1))   # Reshape tensor to be 4d
         return find_local_peaks(img=heatmap, threshold=threshold)
 
 
