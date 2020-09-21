@@ -20,8 +20,8 @@ Starts inference server.
 app = Flask(__name__, static_folder='frontend/static', template_folder='frontend/templates')
 
 parser = argparse.ArgumentParser()
-parser.add_argument('consumer_send_port')
-parser.add_argument('producer_send_port')
+parser.add_argument('-consumer_send_port')
+parser.add_argument('-producer_send_port')
 parser.add_argument('-n_servers', default=1, type=int, required=False)
 args = parser.parse_args()
 
