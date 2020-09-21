@@ -5,10 +5,21 @@ import zmq
 log = logging.getLogger(__name__)
 
 class ResultCollector:
+    """
+    Class for receiving output of many servers
+    """
     def __init__(self, receiver_port):
         self.receiver_port = receiver_port
 
     def run(self):
+        """
+        Iterates through all frames and returns frames in order.
+
+        I.e server 1 processes frame 1 before server 2 processes frame 0,
+        then frame 0 is ensured to return before frame 1
+
+        :return: Generator yielding idx, image, and predicted peaks
+        """
         context = zmq.Context()
         receiver = context.socket(zmq.PULL)
         receiver.bind(f'tcp://*:{self.receiver_port}')

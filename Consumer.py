@@ -7,6 +7,9 @@ from InferenceEngine import InferenceEngine
 log = logging.getLogger(__name__)
 
 class Consumer:
+    """
+    Consumer class for processing frames from video.
+    """
     def __init__(self, receiver_port, sender_port, model_path, local_peak_threshold=0.2):
         self.receiver_port = receiver_port
         self.sender_port = sender_port
@@ -14,6 +17,10 @@ class Consumer:
         self.local_peak_threshold = local_peak_threshold
 
     def run(self):
+        """
+        Loops forever listening for frames. When received performs inference on the frame
+        :return: None
+        """
         context = zmq.Context()
         receiver = context.socket(zmq.PULL)
         receiver.connect(f'tcp://localhost:{self.receiver_port}')

@@ -6,10 +6,18 @@ from local_peak_finding import find_local_peaks
 
 
 class InferenceEngine:
+    """
+    Class for performing inference on frames.
+    """
     def __init__(self, model_path):
         self.model = tf.keras.models.load_model(model_path, compile=False)
 
-    def make_inference(self, X):
+    def make_inference(self, X: np.ndarray):
+        """
+
+        :param X: frame represented as numpy array
+        :return: Heatmap of predicted position of objects
+        """
         X = np.expand_dims(X, axis=0).astype("float32") / 255.0
         X = tf.image.resize(X, size=[512, 512])
         Y = self.model.predict(X)
@@ -17,6 +25,13 @@ class InferenceEngine:
 
     @staticmethod
     def find_local_peaks(img, heatmap, threshold=0.2):
+        """
+        Returns position of local peaks from heatmap
+        :param img: frame from video
+        :param heatmap: predicted heatmap
+        :param threshold: Threshold to determine if a point should be considered a peak
+        :return: position of peaks
+        """
         heatmap = cv2.resize(heatmap.squeeze(), img.squeeze().shape)
         heatmap = heatmap.reshape((1, heatmap.shape[0], heatmap.shape[1], 1))
         return find_local_peaks(img=heatmap, threshold=threshold)

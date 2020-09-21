@@ -11,6 +11,12 @@ from Producer import Producer
 from ResultCollector import ResultCollector
 from util import encode_img_to_data_url
 
+"""
+Entry point for application. 
+Starts webserver.
+Starts inference server.
+"""
+
 app = Flask(__name__, static_folder='frontend/static', template_folder='frontend/templates')
 
 parser = argparse.ArgumentParser()
@@ -34,6 +40,13 @@ def index():
 
 @app.route('/generate_predictions')
 def generate_predictions():
+    """
+    Spawns a producer which reads video frames and result collector to yield results.
+    Iterates through result collector and yields results to client as they are available
+    Uses event-stream to keep connection open.
+    
+    :return: Flask response (event-stream)
+    """
     video_name = request.args.get('video_name')
 
     producer = Producer(sender_port=args.producer_send_port, video_path=f'data/{video_name}')
@@ -56,6 +69,9 @@ def generate_predictions():
 
 @app.route('/get_available_videos')
 def get_available_videos():
+    """
+    :return: Available video files (assumed to be in data directory)
+    """
     videos = os.listdir('data')
     videos = [v for v in videos if os.path.splitext(v)[-1] == '.mp4']
     return jsonify(videos)
