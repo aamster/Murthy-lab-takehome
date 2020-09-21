@@ -31,3 +31,7 @@ This has the advantage that as soon as a server is ready, it consumes the batch 
 
 ## Architecture for generating predictions
 ![Image of generate predictions](https://docs.google.com/drawings/d/e/2PACX-1vTXa-MkTo3R7cwMOGVVEvvrKQU0bPVfd-fsorkQV3SWsSiwLe_KwUaTXy4y4JeTYe715YB9frIGtkhE/pub?w=960&h=720)
+
+## Example of running app
+Predictions displayed as Xs.
+![Image of app](https://docs.google.com/drawings/d/e/2PACX-1vTnH-SmLuhEyqjzL5s1W1JSmjJsrXXRVDvamLKJ_u2p9qH47ahCFIP__a5LsiPMK7JnsQmjbXekt3Me/pub?w=960&h=720)
