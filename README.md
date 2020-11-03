@@ -1,4 +1,4 @@
-# Murthy Lab Takehome
+# Interactive model inference
 
 This implements task A: A server that can interactively perform model inference
 
